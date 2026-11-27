@@ -1,0 +1,51 @@
+/* The Great Turkey Escape — warm autumn UI over the canvas stage. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #241423; font-family: "Avenir Next", "Segoe UI", "PingFang SC", system-ui, sans-serif; color: #fff7ea; overflow: hidden; }
+#stage { position: relative; width: min(100vw, 177.78vh); aspect-ratio: 16/9; margin: 0 auto; top: 50%; transform: translateY(-50%); box-shadow: 0 30px 80px rgba(0,0,0,.55); border-radius: 10px; overflow: hidden; background: #f7a54d; }
+canvas { display: block; width: 100%; height: 100%; }
+.hidden { display: none !important; }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 12px 16px; background: linear-gradient(180deg, rgba(43,18,32,.72), rgba(43,18,32,0)); pointer-events: none; z-index: 5; }
+.hud-cluster { display: flex; gap: 10px; align-items: flex-start; }
+.hud-center { flex-direction: column; align-items: center; gap: 3px; min-width: 340px; }
+.hud-right { align-items: center; }
+.hud-item { background: rgba(36,16,28,.62); border: 1px solid rgba(255,214,150,.35); border-radius: 10px; padding: 6px 12px; font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; backdrop-filter: blur(3px); }
+.hud-label { display: block; font-size: 10px; letter-spacing: .14em; color: #ffd696; font-weight: 600; }
+#hud-lives { color: #ff8a5c; letter-spacing: .2em; font-size: 16px; }
+#hud-combo { color: #ffe066; }
+#hud-stage { font-size: 15px; font-weight: 700; text-shadow: 0 2px 6px rgba(0,0,0,.5); }
+#hud-distance { font-size: 13px; color: #ffe9c4; font-variant-numeric: tabular-nums; }
+#progress-wrap { position: relative; width: 340px; height: 14px; background: rgba(36,16,28,.6); border-radius: 8px; border: 1px solid rgba(255,214,150,.4); overflow: hidden; }
+#progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #ffb35c, #e8762c); transition: width .2s linear; }
+#progress-barn { position: absolute; right: 6px; top: 0; font-size: 9px; line-height: 14px; letter-spacing: .08em; color: #fff7ea; }
+.farmer-item { padding-bottom: 9px; }
+#farmer-wrap { width: 130px; height: 9px; background: rgba(255,255,255,.18); border-radius: 5px; overflow: hidden; margin-top: 4px; }
+#farmer-bar { height: 100%; width: 60%; background: linear-gradient(90deg, #7ed957, #ffe066, #ff5252); background-size: 130px 100%; transition: width .25s; }
+.hud-btn { pointer-events: auto; cursor: pointer; background: rgba(36,16,28,.62); border: 1px solid rgba(255,214,150,.35); color: #fff7ea; border-radius: 10px; font-size: 17px; padding: 7px 10px; }
+.hud-btn:hover { background: rgba(80,35,50,.8); }
+#toast { position: absolute; top: 19%; left: 50%; transform: translateX(-50%) rotate(-2deg); font-size: 30px; font-weight: 900; letter-spacing: .04em; color: #fff; background: linear-gradient(90deg, #d93a1e, #e8762c); padding: 8px 22px; border-radius: 999px; box-shadow: 0 10px 30px rgba(160,30,0,.45); z-index: 6; }
+#danger-vignette { position: absolute; inset: 0; pointer-events: none; z-index: 4; box-shadow: inset 0 0 90px 34px rgba(214, 28, 28, 0); transition: box-shadow .3s; }
+#danger-vignette.on { box-shadow: inset 0 0 90px 34px rgba(214, 28, 28, .55); }
+
+/* ---------- Panels ---------- */
+.panel-screen { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(36,14,28,.18), rgba(36,14,28,.45)); z-index: 8; }
+.panel { width: min(620px, 92%); background: linear-gradient(165deg, rgba(53,22,38,.94), rgba(84,32,32,.94)); border: 1px solid rgba(255,190,110,.45); border-radius: 20px; padding: 30px 36px; box-shadow: 0 24px 60px rgba(0,0,0,.5); text-align: center; }
+.panel.small { width: min(420px, 92%); }
+.eyebrow { font-size: 11px; letter-spacing: .22em; color: #ffb35c; font-weight: 700; }
+.panel h1 { font-size: 54px; line-height: 1.02; margin: 10px 0 4px; font-weight: 900; }
+.panel h1 span { color: #ffb35c; }
+.panel h2 { font-size: 32px; margin: 6px 0 10px; }
+.tagline { font-size: 17px; color: #ffd696; font-style: italic; }
+.story { margin: 14px auto 4px; font-size: 15px; line-height: 1.65; color: #fdeed3; max-width: 520px; }
+.controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; margin: 16px auto; max-width: 520px; text-align: left; font-size: 13px; color: #ffe9c4; }
+kbd { background: #fff7ea; color: #4a2436; border-radius: 5px; padding: 1px 7px; font-family: inherit; font-weight: 700; font-size: 12px; box-shadow: 0 2px 0 #c9a06a; }
+.btn-primary { cursor: pointer; border: none; background: linear-gradient(180deg, #ff9a3d, #e8762c); color: #fff; font-size: 18px; font-weight: 800; padding: 13px 28px; border-radius: 999px; box-shadow: 0 8px 22px rgba(232,118,44,.45); margin-top: 8px; }
+.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-ghost { cursor: pointer; display: block; margin: 10px auto 0; background: none; border: 1px solid rgba(255,214,150,.5); color: #ffd696; padding: 9px 20px; border-radius: 999px; font-size: 14px; }
+.best-line { margin-top: 12px; font-size: 13px; color: #d9b98c; }
+#end-stars { font-size: 34px; color: #ffe066; letter-spacing: .3em; margin: 4px 0; text-shadow: 0 3px 10px rgba(0,0,0,.4); }
+#end-verdict { font-size: 15px; line-height: 1.6; color: #fdeed3; }
+#end-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; margin: 16px auto 6px; max-width: 430px; text-align: left; font-size: 14px; }
+#end-stats dt { color: #ffb35c; display: inline; }
+#end-stats dd { display: inline; float: right; font-weight: 700; font-variant-numeric: tabular-nums; }
